@@ -16,8 +16,8 @@ import subprocess
 import tempfile
 
 CONFIG = Path.home() / '.config/hypr/input.lua'
-BEGIN = '-- BEGIN io.github.artmoreno.trackpoint device (managed by the TrackPoint bar widget)'
-END = '-- END io.github.artmoreno.trackpoint device'
+BEGIN = '-- BEGIN maitrios.trackpoint device (managed by the TrackPoint bar widget)'
+END = '-- END maitrios.trackpoint device'
 MANAGED = re.compile(r'\n*' + re.escape(BEGIN) + r'\n.*?' + re.escape(END) + r'\n?', re.S)
 DEVICE_BLOCK = re.compile(r'hl\.device\s*\(\s*\{(?P<body>.*?)\}\s*\)', re.S)
 VALUE = r'("(?:[^"\\]|\\.)*"|-?\d+(?:\.\d+)?|true|false)'

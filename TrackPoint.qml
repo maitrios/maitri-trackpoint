@@ -1,4 +1,5 @@
 import QtQuick
+import QtQuick.Shapes
 import Quickshell
 import Quickshell.Io
 import qs.Ui
@@ -6,8 +7,8 @@ import qs.Commons
 
 Panel {
   id: root
-  moduleName: "io.github.artmoreno.trackpoint"
-  ipcTarget: "io.github.artmoreno.trackpoint"
+  moduleName: "maitrios.trackpoint"
+  ipcTarget: "maitrios.trackpoint"
   // manageIpc: false so this panel owns the single IpcHandler the target
   // permits, which adds the device method below to Panel's open/close set.
   manageIpc: false
@@ -19,15 +20,7 @@ Panel {
   property string device: ""
   property string status: ""
   property bool queued: false
-  // Bar icon, set per widget with: maitri bar set io.github.artmoreno.trackpoint logo <wordmark|dot|color>
-  readonly property string logo: ["wordmark", "dot", "color"].indexOf(String(setting("logo", "wordmark"))) !== -1
-    ? String(setting("logo", "wordmark")) : "wordmark"
-  readonly property var logoOptions: [
-    { value: "wordmark", label: "ThinkPad" },
-    { value: "dot", label: "Red dot" },
-    { value: "color", label: "Color logo" }
-  ]
-  readonly property string pluginDir: Quickshell.env("HOME") + "/.config/maitri/plugins/io.github.artmoreno.trackpoint"
+  readonly property string pluginDir: Quickshell.env("HOME") + "/.config/maitri/plugins/maitrios.trackpoint"
   readonly property string helper: pluginDir + "/control.py"
   // Middle button (the one between the two hard buttons) bound through hypr/bindings.lua
   readonly property string middleHelper: pluginDir + "/middle.py"
@@ -179,7 +172,7 @@ Panel {
     deviceWriter.command = ["python3", helper, action]
     deviceWriter.running = true
   }
-  // maitri-shell io.github.artmoreno.trackpoint device <on|off|toggle>
+  // maitri-shell maitrios.trackpoint device <on|off|toggle>
   function deviceIpc(action) {
     action = String(action || "toggle")
     if (["on", "off", "toggle"].indexOf(action) === -1) return "usage: device <on|off|toggle>"
@@ -310,67 +303,25 @@ Panel {
     }
   }
 
-  Process {
-    id: logoWriter
-    onExited: function(exitCode, exitStatus) {
-      if (exitCode !== 0) root.status = "Could not change the bar icon."
-    }
-  }
-  function setLogo(value) {
-    if (logoWriter.running || value === logo) return
-    // maitri's own command stores it on this widget's bar entry, which updates the icon live
-    logoWriter.command = ["maitri", "bar", "set", "io.github.artmoreno.trackpoint", "logo", value]
-    logoWriter.running = true
-  }
-
-  TextMetrics {
-    id: logoMetrics
-    text: "ThinkPad"
-    font.family: "Liberation Sans"
-    font.pixelSize: Style.bar.iconFont
-    font.bold: true
-    font.italic: true
-  }
-
   BarIconButton {
     id: button
     anchors.fill: parent
     bar: root.bar
     tooltipText: (root.device ? "TrackPoint · " + root.device : "TrackPoint") + (root.deviceEnabled ? "" : " · off")
-    // The wordmark and color logo are wider than the square icon slot.
-    fixedWidth: vertical || root.logo === "dot" ? -1
-      : root.logo === "color" ? colorLogoWidth + Style.space(12)
-      : Math.ceil(logoMetrics.advanceWidth) + Style.space(12)
-    readonly property int colorLogoHeight: Math.round(Style.bar.iconFont * 1.15)
-    // thinkpad-color.svg is 768 x 274
-    readonly property int colorLogoWidth: Math.ceil(colorLogoHeight * 768 / 274)
     iconComponent: Component {
       Item {
         opacity: root.deviceEnabled ? 1 : 0.4
-        Text {
+        Shape {
           anchors.centerIn: parent
-          visible: root.logo === "wordmark"
-          text: logoMetrics.text
-          color: "#e2231a"
-          font: logoMetrics.font
-        }
-        Rectangle {
-          anchors.centerIn: parent
-          visible: root.logo === "dot"
-          width: Math.round(Style.bar.iconFont * 0.8)
-          height: width
-          radius: width / 2
-          color: "#e2231a"
-        }
-        Image {
-          anchors.centerIn: parent
-          visible: root.logo === "color"
-          source: root.logo === "color" ? Qt.resolvedUrl("thinkpad-color.svg") : ""
-          width: button.colorLogoWidth
-          height: button.colorLogoHeight
-          sourceSize: Qt.size(width * 2, height * 2)
-          fillMode: Image.PreserveAspectFit
-          smooth: true
+          width: 256
+          height: 256
+          scale: Math.min(parent.width, parent.height) / 256
+          preferredRendererType: Shape.CurveRenderer
+          ShapePath {
+            fillColor: button.foreground
+            strokeColor: "transparent"
+            PathSvg { path: "M208,144H136V95.19a40,40,0,1,0-16,0V144H48a16,16,0,0,0-16,16v48a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V160A16,16,0,0,0,208,144ZM104,56a24,24,0,1,1,24,24A24,24,0,0,1,104,56ZM208,208H48V160H208v48Zm-40-96h32a8,8,0,0,1,0,16H168a8,8,0,0,1,0-16Z" }
+          }
         }
       }
     }
@@ -487,23 +438,6 @@ Panel {
           opacity: 0.7
           font.family: root.bar.fontFamily
           font.pixelSize: Style.font.caption
-        }
-
-        Text {
-          text: "Bar icon"
-          color: root.bar.foreground
-          font.family: root.bar.fontFamily
-          font.pixelSize: Style.font.body
-        }
-        ButtonGroup {
-          options: root.logoOptions
-          value: root.logo
-          spacing: Style.space(4)
-          foreground: root.bar.foreground
-          fontFamily: root.bar.fontFamily
-          fontSize: Style.font.caption
-          focusable: false
-          onChanged: function(v) { root.setLogo(v) }
         }
 
         PanelSeparator { width: parent.width }

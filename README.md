@@ -9,10 +9,6 @@ ArtMoreno and the contributors below.
 
 ![TrackPoint widget](screenshot-panel.png)
 
-![ThinkPad wordmark in the bar](screenshot-wordmark.png)
-
-![Bar icon options](screenshot-icons.png)
-
 ## Features
 
 - **On / off switch.** *Turn off* makes the TrackPoint inert: moving it or
@@ -21,7 +17,7 @@ ArtMoreno and the contributors below.
   keybinding or script:
 
   ```sh
-  maitri-shell io.github.artmoreno.trackpoint device toggle   # or: on, off
+  maitri-shell maitrios.trackpoint device toggle   # or: on, off
   ```
 
   IPC replies with `queued on`, `queued off`, or `queued toggle` when it accepts
@@ -41,13 +37,6 @@ ArtMoreno and the contributors below.
   focused, or block the default with "Do nothing".
 - Presets for stock maitri commands (menus, screenshots, media, lock screen,
   nightlight, notifications and more), or any custom shell command.
-- **Choice of bar icon.** The red *ThinkPad* wordmark, a red TrackPoint dot,
-  or the color ThinkPad logo. Pick one under *Bar icon* in the panel, or run:
-
-  ```sh
-  maitri bar set io.github.artmoreno.trackpoint logo wordmark   # or: dot, color
-  ```
-
 ## Requirements
 
 - maitri (plugin manifest `schemaVersion` 1)
@@ -61,7 +50,7 @@ ArtMoreno and the contributors below.
 maitri plugin add https://github.com/maitrios/maitri-trackpoint.git --enable
 ```
 
-The ThinkPad wordmark appears in the bar. Click it to open the panel.
+A joystick icon appears in the bar, themed like the other widgets. Click it to open the panel.
 
 ## What it changes on your system
 
@@ -74,10 +63,10 @@ Input-file updates are atomic and preserve symlinks and file permissions.
 
 | When | File | Change |
 |---|---|---|
-| You move the sensitivity slider | `~/.config/hypr/input.lua` | Sets `sensitivity` in your existing `hl.device` block for the TrackPoint. If you have none, adds a block marked `-- BEGIN io.github.artmoreno.trackpoint device`, removed again when you reset to default. |
+| You move the sensitivity slider | `~/.config/hypr/input.lua` | Sets `sensitivity` in your existing `hl.device` block for the TrackPoint. If you have none, adds a block marked `-- BEGIN maitrios.trackpoint device`, removed again when you reset to default. |
 | You press **Turn off** next to *TrackPoint* | `~/.config/hypr/input.lua` | Sets `enabled = false` in the same `hl.device` block. **Turn on** removes it again. |
 | You press **Enable middle button actions** | `~/.config/hypr/input.lua` | Sets the TrackPoint's `scroll_method` to `"no_scroll"` so a hold isn't taken as hold-to-scroll. Your previous value is saved. |
-| You enable actions and assign them | `~/.config/hypr/bindings.lua` | Adds a block marked `-- BEGIN io.github.artmoreno.trackpoint middle button` with binds for the actions you use. |
+| You enable actions and assign them | `~/.config/hypr/bindings.lua` | Adds a block marked `-- BEGIN maitrios.trackpoint middle button` with binds for the actions you use. |
 | You press **Turn off** | both files | Removes the bind block and restores your previous scroll setting. |
 
 Middle button settings are stored in
@@ -93,7 +82,7 @@ updates keep them.
 3. Remove the plugin:
 
    ```sh
-   maitri plugin remove io.github.artmoreno.trackpoint
+   maitri plugin remove maitrios.trackpoint
    ```
 
 4. Optionally delete the saved middle button settings:
@@ -103,7 +92,7 @@ updates keep them.
    ```
 
 If you removed the plugin without step 1, delete the block between
-`-- BEGIN io.github.artmoreno.trackpoint middle button` and its `-- END` line in
+`-- BEGIN maitrios.trackpoint middle button` and its `-- END` line in
 `~/.config/hypr/bindings.lua`, and remove `scroll_method = "no_scroll"` from the
 TrackPoint block in `~/.config/hypr/input.lua`, then run `hyprctl reload`.
 
@@ -113,7 +102,7 @@ terminal to remove `enabled = false` from its `hl.device` block in
 plugin is installed, you can also recover from a terminal with:
 
 ```sh
-python3 ~/.config/maitri/plugins/io.github.artmoreno.trackpoint/control.py on
+python3 ~/.config/maitri/plugins/maitrios.trackpoint/control.py on
 ```
 
 ## Contributors and thanks

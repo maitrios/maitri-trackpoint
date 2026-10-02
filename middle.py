@@ -40,8 +40,8 @@ runner = Path(__file__).resolve().parent / 'middle_button.py'
 state_dir = Path(os.environ.get('XDG_STATE_HOME') or Path.home() / '.local/state') / 'maitri/trackpoint'
 store = state_dir / 'middle.json'
 config = Path.home() / '.config/hypr/bindings.lua'
-begin = '-- BEGIN io.github.artmoreno.trackpoint middle button (managed by the TrackPoint bar widget)'
-end = '-- END io.github.artmoreno.trackpoint middle button'
+begin = '-- BEGIN maitrios.trackpoint middle button (managed by the TrackPoint bar widget)'
+end = '-- END maitrios.trackpoint middle button'
 block = re.compile(r'\n?' + re.escape(begin) + r'\n.*?' + re.escape(end) + r'\n?', re.S)
 usage = ('Usage: middle.py [enable | disable | set <profile> <slot> <command> | '
          'add-app [class] | remove-app <class>]')
