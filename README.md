@@ -50,7 +50,7 @@ ArtMoreno and the contributors below.
 maitri plugin add https://github.com/maitrios/maitri-trackpoint.git --enable
 ```
 
-A joystick icon appears in the bar, themed like the other widgets. Click it to open the panel.
+A Phosphor radio-button icon appears in the bar, themed like the other widgets. Click it to open the panel.
 
 ## What it changes on your system
 
