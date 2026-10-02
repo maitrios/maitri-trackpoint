@@ -37,7 +37,7 @@ MODS = {
 SLOTS = ('tap', 'double', 'triple', 'hold', 'double_hold', 'triple_hold',
          'up', 'down', 'left', 'right') + tuple(MODS)
 runner = Path(__file__).resolve().parent / 'middle_button.py'
-state_dir = Path(os.environ.get('XDG_STATE_HOME') or Path.home() / '.local/state') / 'omarchy/trackpoint'
+state_dir = Path(os.environ.get('XDG_STATE_HOME') or Path.home() / '.local/state') / 'maitri/trackpoint'
 store = state_dir / 'middle.json'
 config = Path.home() / '.config/hypr/bindings.lua'
 begin = '-- BEGIN io.github.artmoreno.trackpoint middle button (managed by the TrackPoint bar widget)'

@@ -22,7 +22,7 @@ GESTURE_PIXELS = 40
 TAPS = {1: 'tap', 2: 'double', 3: 'triple'}
 HOLDS = {1: 'hold', 2: 'double_hold', 3: 'triple_hold'}
 GESTURES = ('up', 'down', 'left', 'right')
-state_dir = Path(os.environ.get('XDG_STATE_HOME') or Path.home() / '.local/state') / 'omarchy/trackpoint'
+state_dir = Path(os.environ.get('XDG_STATE_HOME') or Path.home() / '.local/state') / 'maitri/trackpoint'
 store = state_dir / 'middle.json'
 # Press timing state is per-user; never fall back to the shared /tmp
 runtime = Path(os.environ['XDG_RUNTIME_DIR']) if os.environ.get('XDG_RUNTIME_DIR') else state_dir

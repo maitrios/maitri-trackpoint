@@ -5,8 +5,8 @@
   "version": "1.0.0",
   "author": "ArtMoreno",
   "license": "MIT",
-  "homepage": "https://github.com/ArtMoreno/omarchy-trackpoint",
-  "description": "ThinkPad TrackPoint sensitivity slider and a programmable middle button (taps, holds, flicks, per-app profiles) in the Omarchy bar",
+  "homepage": "https://github.com/maitrios/maitri-trackpoint",
+  "description": "ThinkPad TrackPoint sensitivity slider and a programmable middle button (taps, holds, flicks, per-app profiles) in the maitri bar",
   "kinds": ["bar-widget"],
   "entryPoints": {
     "barWidget": "TrackPoint.qml"

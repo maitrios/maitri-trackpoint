@@ -19,7 +19,7 @@ Panel {
   property string device: ""
   property string status: ""
   property bool queued: false
-  // Bar icon, set per widget with: omarchy bar set io.github.artmoreno.trackpoint logo <wordmark|dot|color>
+  // Bar icon, set per widget with: maitri bar set io.github.artmoreno.trackpoint logo <wordmark|dot|color>
   readonly property string logo: ["wordmark", "dot", "color"].indexOf(String(setting("logo", "wordmark"))) !== -1
     ? String(setting("logo", "wordmark")) : "wordmark"
   readonly property var logoOptions: [
@@ -27,7 +27,7 @@ Panel {
     { value: "dot", label: "Red dot" },
     { value: "color", label: "Color logo" }
   ]
-  readonly property string pluginDir: Quickshell.env("HOME") + "/.config/omarchy/plugins/io.github.artmoreno.trackpoint"
+  readonly property string pluginDir: Quickshell.env("HOME") + "/.config/maitri/plugins/io.github.artmoreno.trackpoint"
   readonly property string helper: pluginDir + "/control.py"
   // Middle button (the one between the two hard buttons) bound through hypr/bindings.lua
   readonly property string middleHelper: pluginDir + "/middle.py"
@@ -72,41 +72,41 @@ Panel {
       { key: "alt_shift", label: "Alt + Shift + tap" }
     ]
   })
-  // Every preset is a stock Omarchy command; anything else goes in "Custom command…"
+  // Every preset is a stock maitri command; anything else goes in "Custom command…"
   readonly property var middlePresets: [
     { value: "", label: "Nothing" },
     // Menus
-    { value: "omarchy-menu toggle root", label: "Omarchy menu" },
-    { value: "omarchy-menu toggle apps", label: "Apps menu" },
-    { value: "omarchy-menu toggle theme", label: "Theme menu" },
+    { value: "maitri-menu toggle root", label: "maitri menu" },
+    { value: "maitri-menu toggle apps", label: "Apps menu" },
+    { value: "maitri-menu toggle theme", label: "Theme menu" },
     // Capture
-    { value: "omarchy-capture-screenshot", label: "Screenshot" },
-    { value: "omarchy-capture-screenrecording --stop-recording || omarchy-menu toggle trigger.capture.screenrecord", label: "Screen recording" },
-    { value: "omarchy-capture-text", label: "Extract text (OCR)" },
+    { value: "maitri-capture-screenshot", label: "Screenshot" },
+    { value: "maitri-capture-screenrecording --stop-recording || maitri-menu toggle trigger.capture.screenrecord", label: "Screen recording" },
+    { value: "maitri-capture-text", label: "Extract text (OCR)" },
     { value: "pkill hyprpicker || hyprpicker -a", label: "Color picker" },
     // Input
-    { value: "omarchy-shell shell toggle omarchy.clipboard", label: "Clipboard history" },
-    { value: "omarchy-shell shell toggle omarchy.emojis", label: "Emoji picker" },
+    { value: "maitri-menu-clipboard", label: "Clipboard history" },
+    { value: "maitri-menu-emoji", label: "Emoji picker" },
     // Media and audio
-    { value: "omarchy-shell media playPause", label: "Play / pause" },
-    { value: "omarchy-shell media next", label: "Next track" },
-    { value: "omarchy-shell media previous", label: "Previous track" },
-    { value: "omarchy-audio-output-volume mute-toggle", label: "Mute audio" },
-    { value: "omarchy-audio-input-mute", label: "Mute microphone" },
+    { value: "maitri-shell media playPause", label: "Play / pause" },
+    { value: "maitri-shell media next", label: "Next track" },
+    { value: "maitri-shell media previous", label: "Previous track" },
+    { value: "maitri-audio-output-volume mute-toggle", label: "Mute audio" },
+    { value: "maitri-audio-input-mute", label: "Mute microphone" },
     // Apps
-    { value: "omarchy-launch-terminal", label: "Open terminal" },
-    { value: "omarchy-launch-browser", label: "Open browser" },
-    { value: "omarchy-launch-nautilus", label: "File manager" },
-    { value: "omarchy-launch-editor", label: "Editor" },
+    { value: "maitri-launch-terminal", label: "Open terminal" },
+    { value: "maitri-launch-browser", label: "Open browser" },
+    { value: "maitri-launch-nautilus", label: "File manager" },
+    { value: "maitri-launch-editor", label: "Editor" },
     // Window and system
-    { value: "omarchy-hyprland-window-pop", label: "Pop window out" },
-    { value: "omarchy-system-lock", label: "Lock screen" },
-    { value: "omarchy-toggle-nightlight", label: "Toggle nightlight" },
-    { value: "omarchy-shell shell toggle omarchy.bluetooth", label: "Bluetooth" },
+    { value: "maitri-hyprland-window-pop", label: "Pop window out" },
+    { value: "maitri-system-lock", label: "Lock screen" },
+    { value: "maitri-toggle-nightlight", label: "Toggle nightlight" },
+    { value: "maitri-shell shell toggle maitri.bluetooth", label: "Bluetooth" },
     // Notifications
-    { value: "omarchy-shell notifications showHistory", label: "Notification history" },
-    { value: "omarchy-shell notifications dismissAll", label: "Dismiss notifications" },
-    { value: "omarchy-toggle-notification-silencing", label: "Silence notifications" },
+    { value: "maitri-shell notifications showHistory", label: "Notification history" },
+    { value: "maitri-shell notifications dismissAll", label: "Dismiss notifications" },
+    { value: "maitri-toggle-notification-silencing", label: "Silence notifications" },
     { value: "custom", label: "Custom command…" }
   ]
   // App profiles fall back to the default for anything left empty, so empty
@@ -179,7 +179,7 @@ Panel {
     deviceWriter.command = ["python3", helper, action]
     deviceWriter.running = true
   }
-  // omarchy-shell io.github.artmoreno.trackpoint device <on|off|toggle>
+  // maitri-shell io.github.artmoreno.trackpoint device <on|off|toggle>
   function deviceIpc(action) {
     action = String(action || "toggle")
     if (["on", "off", "toggle"].indexOf(action) === -1) return "usage: device <on|off|toggle>"
@@ -318,8 +318,8 @@ Panel {
   }
   function setLogo(value) {
     if (logoWriter.running || value === logo) return
-    // Omarchy's own command stores it on this widget's bar entry, which updates the icon live
-    logoWriter.command = ["omarchy", "bar", "set", "io.github.artmoreno.trackpoint", "logo", value]
+    // maitri's own command stores it on this widget's bar entry, which updates the icon live
+    logoWriter.command = ["maitri", "bar", "set", "io.github.artmoreno.trackpoint", "logo", value]
     logoWriter.running = true
   }
 

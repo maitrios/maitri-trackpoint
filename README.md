@@ -1,7 +1,11 @@
-# TrackPoint for Omarchy
+# TrackPoint for maitri
 
-A ThinkPad TrackPoint widget for the Omarchy bar: a pointer sensitivity slider
+A ThinkPad TrackPoint widget for the maitri bar: a pointer sensitivity slider
 and a programmable middle button.
+
+This is a maitri port of [ArtMoreno/omarchy-trackpoint](https://github.com/ArtMoreno/omarchy-trackpoint),
+with paths and commands switched over to maitri. Credit for the widget goes to
+ArtMoreno and the contributors below.
 
 ![TrackPoint widget](screenshot-panel.png)
 
@@ -17,7 +21,7 @@ and a programmable middle button.
   keybinding or script:
 
   ```sh
-  omarchy-shell io.github.artmoreno.trackpoint device toggle   # or: on, off
+  maitri-shell io.github.artmoreno.trackpoint device toggle   # or: on, off
   ```
 
   IPC replies with `queued on`, `queued off`, or `queued toggle` when it accepts
@@ -35,26 +39,26 @@ and a programmable middle button.
   - a modifier + tap (Super, Alt, Shift, Ctrl and combinations)
 - **Per-app profiles.** Override single actions while a specific app is
   focused, or block the default with "Do nothing".
-- Presets for stock Omarchy commands (menus, screenshots, media, lock screen,
+- Presets for stock maitri commands (menus, screenshots, media, lock screen,
   nightlight, notifications and more), or any custom shell command.
 - **Choice of bar icon.** The red *ThinkPad* wordmark, a red TrackPoint dot,
   or the color ThinkPad logo. Pick one under *Bar icon* in the panel, or run:
 
   ```sh
-  omarchy bar set io.github.artmoreno.trackpoint logo wordmark   # or: dot, color
+  maitri bar set io.github.artmoreno.trackpoint logo wordmark   # or: dot, color
   ```
 
 ## Requirements
 
-- Omarchy with the Quattro shell (plugin manifest `schemaVersion` 1)
+- maitri (plugin manifest `schemaVersion` 1)
 - A ThinkPad-style TrackPoint that Hyprland lists with `trackpoint` in its
   name (check with `hyprctl devices`)
-- `python3` (preinstalled on Omarchy)
+- `python3` (preinstalled on maitri)
 
 ## Install
 
 ```sh
-omarchy plugin add https://github.com/ArtMoreno/omarchy-trackpoint.git --enable
+maitri plugin add https://github.com/maitrios/maitri-trackpoint.git --enable
 ```
 
 The ThinkPad wordmark appears in the bar. Click it to open the panel.
@@ -77,7 +81,7 @@ Input-file updates are atomic and preserve symlinks and file permissions.
 | You press **Turn off** | both files | Removes the bind block and restores your previous scroll setting. |
 
 Middle button settings are stored in
-`~/.local/state/omarchy/trackpoint/middle.json`, outside the plugin folder, so
+`~/.local/state/maitri/trackpoint/middle.json`, outside the plugin folder, so
 updates keep them.
 
 ## Remove
@@ -89,13 +93,13 @@ updates keep them.
 3. Remove the plugin:
 
    ```sh
-   omarchy plugin remove io.github.artmoreno.trackpoint
+   maitri plugin remove io.github.artmoreno.trackpoint
    ```
 
 4. Optionally delete the saved middle button settings:
 
    ```sh
-   rm -rf ~/.local/state/omarchy/trackpoint
+   rm -rf ~/.local/state/maitri/trackpoint
    ```
 
 If you removed the plugin without step 1, delete the block between
@@ -109,7 +113,7 @@ terminal to remove `enabled = false` from its `hl.device` block in
 plugin is installed, you can also recover from a terminal with:
 
 ```sh
-python3 ~/.config/omarchy/plugins/io.github.artmoreno.trackpoint/control.py on
+python3 ~/.config/maitri/plugins/io.github.artmoreno.trackpoint/control.py on
 ```
 
 ## Contributors and thanks
