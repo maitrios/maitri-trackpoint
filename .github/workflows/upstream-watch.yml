@@ -1,0 +1,53 @@
+name: Upstream watch
+
+# Opens a `flare` issue when the upstream project (named in .maitri/upstream.toml) has commits this
+# repo hasn't reviewed yet. A flare on the agent box ports what applies; see UPSTREAM.md.
+
+on:
+  schedule:
+    - cron: "47 10 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: upstream-watch
+  cancel-in-progress: false
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Open an issue for unreviewed upstream commits
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          field() { sed -n "s/^$1 = \"\(.*\)\"/\1/p" .maitri/upstream.toml; }
+          upstream=$(field upstream) branch=$(field branch) reviewed=$(field reviewed)
+          head=$(gh api "repos/$upstream/commits/$branch" --jq .sha)
+          if [[ $head == "$reviewed" ]]; then
+            echo "nothing new on $upstream@$branch"
+            exit 0
+          fi
+          prefix="Review upstream commits from $upstream"
+          if gh issue list --state open --search "\"$prefix\" in:title" --json title --jq '.[].title' | grep -qF "$prefix"; then
+            echo "already open: $prefix"
+            exit 0
+          fi
+          compare=$(gh api "repos/$upstream/compare/$reviewed...$head")
+          count=$(jq -r .ahead_by <<<"$compare")
+          list=$(jq -r '.commits[] | "- [`\(.sha[:8])`](\(.html_url)) \(.commit.message | split("\n")[0])"' <<<"$compare")
+          gh label create flare --color FF7A00 --description "Work for a flare (agent) to pick up" --force
+          gh label create upstream-sync --color 5319E7 --description "Port or sync from upstream" --force
+          gh issue create --label flare --label upstream-sync \
+            --title "$prefix ${reviewed:0:8}..${head:0:8}" \
+            --body "$(printf '%s\n\n%s\n\n%s\n' \
+              "$count commits on [$upstream]($(jq -r .html_url <<<"$compare")) haven't been reviewed yet:" \
+              "$list" \
+              "Follow \`UPSTREAM.md\`: port what applies, skip the rest with a one-line reason each, set \`reviewed = \"$head\"\` in \`.maitri/upstream.toml\`, and open the PR with the \`upstream-sync\` label. Queue it with \`gh pr merge --squash --auto\`; Andrew's approval merges it.")"
