@@ -1,0 +1,5 @@
+# The upstream maitri-trackpoint was ported from, and the newest upstream commit already reviewed.
+# .github/workflows/upstream-watch.yml reads it; port PRs move `reviewed` forward.
+upstream = "ArtMoreno/omarchy-trackpoint"
+branch = "main"
+reviewed = "15ed45c95ca5523e58a4c712372e2d4ecc972289"
