@@ -2,4 +2,4 @@
 # .github/workflows/upstream-watch.yml reads it; port PRs move `reviewed` forward.
 upstream = "ArtMoreno/omarchy-trackpoint"
 branch = "main"
-reviewed = "15ed45c95ca5523e58a4c712372e2d4ecc972289"
+reviewed = "acbe73abe60daaf7ad49dc79640134e75248f0fe"
